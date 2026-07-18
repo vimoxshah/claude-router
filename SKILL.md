@@ -1,11 +1,11 @@
 ---
 name: claude-router
-description: Claude-native multi-model routing — dispatch each task to the right Claude model tier (Fable judgment · Opus orchestrate/review + hard build · Sonnet build · Haiku volume) via model-pinned subagents. Use when routing a Claude task by model, consulting the advisor at a commitment boundary, or fanning work across tiers. Separate from the Codex orchestrator — never mixes with CLAUDE-CODEX-ROUTING.md / codex-orchestrator.
+description: Claude-native multi-model routing — dispatch each task to the right Claude model tier (Fable judgment · Opus orchestrate/review + hard build · Sonnet build · Haiku volume) via model-pinned subagents. Use when routing a Claude task by model, consulting the advisor at a commitment boundary, or fanning work across tiers.
 ---
 
 # claude-router
 
-**Role.** You are the orchestrator of a Claude-only, multi-model workflow. You decompose a task and dispatch each piece to the cheapest Claude model that does it well, spending premium intelligence only where a wrong call compounds. This mechanism is **entirely separate from the Codex orchestrator** — it never calls `codex`, reads `CLAUDE-CODEX-ROUTING.md`, or touches codex profiles.
+**Role.** You are the orchestrator of a Claude-only, multi-model workflow. You decompose a task and dispatch each piece to the cheapest Claude model that does it well, spending premium intelligence only where a wrong call compounds.
 
 **Context.** The policy (tiers, triggers, cost doctrine, hard rules) lives in the **repo-local `<repo>/CLAUDE-ROUTING.md` if it exists, else the global `~/.claude/CLAUDE-ROUTING.md`** — check the repo root first, fall back to global; a per-repo file overrides the global default wholesale. Read whichever applies if you don't have it in context. The lanes are Claude Code subagents dispatched by the Agent tool:
 

@@ -1,8 +1,8 @@
-# CLAUDE-ROUTING.md — Claude-native model dispatch
+# ROUTING.md — Claude-native model dispatch
 
-A standalone routing layer for **Claude models only** — the orchestrator (your main session) dispatches each task to the cheapest Claude model that can do it well, and spends premium intelligence only where errors compound. This is **independent of the Codex orchestrator** (`CLAUDE-CODEX-ROUTING.md` / `codex-orchestrator`): different vendor, different file, no shared config. Nothing here dispatches to Codex, and nothing in the Codex layer reads this.
+A standalone routing layer for **Claude models only** — the orchestrator (your main session) dispatches each task to the cheapest Claude model that can do it well, and spends premium intelligence only where errors compound.
 
-**Resolution:** the `claude-router` skill follows the **repo-local `<repo>/CLAUDE-ROUTING.md` if present, else this global `~/.claude/CLAUDE-ROUTING.md`**. A per-repo file overrides the global default wholesale.
+**Resolution:** the `claude-router` skill reads the **repo-local `<repo>/CLAUDE-ROUTING.md` if present, else the global `~/.claude/CLAUDE-ROUTING.md`** (this file is the template you copy into place). A per-repo file overrides the global default wholesale.
 
 **Mechanism:** Claude Code subagents. Each lane is either a model-pinned role agent (`advisor` / `implementer` / `hard-implementer` / `explorer` / `reviewer`) dispatched via the Agent tool by name, or an inline Agent-tool call with an explicit `model:` override. The orchestrator is whatever model the main session runs; it coordinates and verifies.
 
@@ -35,7 +35,7 @@ The economics: most turns are mechanical — run them cheap (Haiku/Sonnet); the 
 - **Consult the advisor *before* committing, not after.** Its value is a course-correction at the fork, not a post-mortem. Distinct from `reviewer`, which checks finished work.
 - **Keep the orchestrator's context lean.** Delegate breadth to `explorer` (Haiku) and heavy reads to subagents; keep the conclusions, drop the raw material.
 - **Reason once, then hand off.** Don't re-derive a decision the advisor already made; carry its verdict into the build dispatch.
-- **Persistent lanes, delta consults.** A fresh spawn per consult is the advisor-*tool* flaw: every call re-pays the full context transfer and the lane remembers nothing. Spawn each role agent once per work stream, then continue the same instance via SendMessage with only the delta. Fresh spawn only on a new stream, a tier change, or a poisoned context.
+- **Persistent lanes, delta consults.** A fresh spawn per consult re-pays the full context transfer and the lane remembers nothing. Spawn each role agent once per work stream, then continue the same instance via SendMessage with only the delta. Fresh spawn only on a new stream, a tier change, or a poisoned context.
 - **Re-route at boundaries, not only on failure.** Re-evaluate the lane at each task boundary / compaction — a switch there is nearly free (context is being rebuilt anyway). Signals: repeated churn on one file, a mechanical task surfacing a design decision (pull the decision up, not the whole task), thin exploration results twice.
 - **When judgment is the deliverable, don't delegate it.** A task graded on design calls stays at the judgment tier with the orchestrator in the loop — routing it to the build tier loses more score than the tokens save.
 - **Escalate up a tier only on evidence** — a task that fails at `implementer` (Sonnet) twice escalates with the failure log: if the *code itself* is the hard part (logic churn, a reasoning-heavy change, a stubborn bug) → `hard-implementer` (Opus) writes it; if the blocker is a *design decision* → an `advisor` (Fable) consult, then a re-dispatch. Never a blind third retry at the same tier.
@@ -70,7 +70,6 @@ The orchestrator absorbing a stalled subagent's work directly is allowed **only 
 
 ## Hard rules
 
-- **This layer never touches Codex.** No `codex exec`, no profiles, no `CLAUDE-CODEX-ROUTING.md`. If a task should go to Codex, that's the other mechanism's call — kept separate on purpose.
 - `advisor`, `explorer`, `reviewer` are **read-only** — they judge, search, and synthesize; the write lanes are `implementer` (Sonnet) and `hard-implementer` (Opus), plus the orchestrator's own trivial edits. `reviewer` and `hard-implementer` are both Opus but distinct lanes: the reviewer role never writes; the hard-implementer role does.
 - The orchestrator verifies build output itself — read the diff, run the test command, check scope creep — before accepting it.
 - Fable is the expensive lane: consult it at genuine commitment boundaries, batch the questions, don't spray it at routine turns.
