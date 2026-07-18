@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="12" markerHeight="12" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 Z" fill="#94a3b8"/>
+    </marker>
+    <linearGradient id="cost" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#94a3b8"/>
+      <stop offset="0.55" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="10" y="10" width="940" height="600" rx="18" fill="#ffffff" stroke="#e2e8f0" stroke-width="2"/>
+
+  <text x="480" y="48" text-anchor="middle" font-size="26" font-weight="800" fill="#1e293b">claude-router</text>
+  <text x="480" y="74" text-anchor="middle" font-size="14" fill="#64748b">Route each task to the cheapest Claude tier that can do it well — via model-pinned subagents</text>
+
+  <!-- Orchestrator -->
+  <rect x="250" y="95" width="460" height="78" rx="12" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="480" y="124" text-anchor="middle" font-size="16" font-weight="800" fill="#4338ca">🧭  Orchestrator — the main session</text>
+  <text x="480" y="150" text-anchor="middle" font-size="12" fill="#475569">Routes each task by type · verifies every write · escalates only on evidence</text>
+
+  <!-- fan-out arrows -->
+  <g stroke="#94a3b8" stroke-width="1.6">
+    <line x1="480" y1="175" x2="124" y2="243" marker-end="url(#ar)"/>
+    <line x1="480" y1="175" x2="307" y2="243" marker-end="url(#ar)"/>
+    <line x1="480" y1="175" x2="490" y2="243" marker-end="url(#ar)"/>
+    <line x1="480" y1="175" x2="673" y2="243" marker-end="url(#ar)"/>
+    <line x1="480" y1="175" x2="856" y2="243" marker-end="url(#ar)"/>
+  </g>
+
+  <!-- lane cards (cheap -> premium) -->
+  <!-- Volume / Haiku -->
+  <rect x="40" y="245" width="168" height="196" rx="12" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+  <text x="124" y="273" text-anchor="middle" font-size="10.5" font-weight="800" fill="#64748b" letter-spacing="1">VOLUME</text>
+  <text x="124" y="301" text-anchor="middle" font-size="16" font-weight="800" fill="#1e293b">Haiku 4.5</text>
+  <text x="124" y="324" text-anchor="middle" font-size="11.5" font-weight="700" fill="#64748b">explorer</text>
+  <text x="124" y="348" text-anchor="middle" font-size="10" fill="#64748b">Broad search &amp; fan-out,</text>
+  <text x="124" y="362" text-anchor="middle" font-size="10" fill="#64748b">locate, summarize, classify</text>
+  <rect x="62" y="398" width="124" height="24" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="124" y="414" text-anchor="middle" font-size="10" font-weight="700" fill="#475569">read-only</text>
+
+  <!-- Build / Sonnet -->
+  <rect x="223" y="245" width="168" height="196" rx="12" fill="#ffffff" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="307" y="273" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0284c7" letter-spacing="1">BUILD</text>
+  <text x="307" y="301" text-anchor="middle" font-size="16" font-weight="800" fill="#1e293b">Sonnet 5</text>
+  <text x="307" y="324" text-anchor="middle" font-size="11.5" font-weight="700" fill="#0284c7">implementer</text>
+  <text x="307" y="348" text-anchor="middle" font-size="10" fill="#64748b">Normal implementation,</text>
+  <text x="307" y="362" text-anchor="middle" font-size="10" fill="#64748b">standard multi-file changes</text>
+  <rect x="245" y="398" width="124" height="24" rx="12" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="307" y="414" text-anchor="middle" font-size="10" font-weight="700" fill="#15803d">✍ WRITES</text>
+
+  <!-- Hard build / Opus -->
+  <rect x="406" y="245" width="168" height="196" rx="12" fill="#ffffff" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="490" y="273" text-anchor="middle" font-size="10.5" font-weight="800" fill="#7c3aed" letter-spacing="1">HARD BUILD</text>
+  <text x="490" y="301" text-anchor="middle" font-size="16" font-weight="800" fill="#1e293b">Opus 4.8</text>
+  <text x="490" y="324" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7c3aed">hard-implementer</text>
+  <text x="490" y="348" text-anchor="middle" font-size="10" fill="#64748b">Escalated / uncertain impl,</text>
+  <text x="490" y="362" text-anchor="middle" font-size="10" fill="#64748b">root-cause debugging</text>
+  <rect x="428" y="398" width="124" height="24" rx="12" fill="#dcfce7" stroke="#22c55e"/>
+  <text x="490" y="414" text-anchor="middle" font-size="10" font-weight="700" fill="#15803d">✍ WRITES</text>
+
+  <!-- Orchestrate / Review / Opus -->
+  <rect x="589" y="245" width="168" height="196" rx="12" fill="#ffffff" stroke="#a78bfa" stroke-width="2"/>
+  <text x="673" y="273" text-anchor="middle" font-size="10.5" font-weight="800" fill="#7c3aed" letter-spacing="0.5">ORCHESTRATE / REVIEW</text>
+  <text x="673" y="301" text-anchor="middle" font-size="16" font-weight="800" fill="#1e293b">Opus 4.8</text>
+  <text x="673" y="324" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7c3aed">reviewer</text>
+  <text x="673" y="348" text-anchor="middle" font-size="10" fill="#64748b">Coordination, synthesis,</text>
+  <text x="673" y="362" text-anchor="middle" font-size="10" fill="#64748b">final diff review</text>
+  <rect x="611" y="398" width="124" height="24" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="673" y="414" text-anchor="middle" font-size="10" font-weight="700" fill="#475569">read-only</text>
+
+  <!-- Judgment / Fable -->
+  <rect x="772" y="245" width="168" height="196" rx="12" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="856" y="273" text-anchor="middle" font-size="10.5" font-weight="800" fill="#d97706" letter-spacing="1">JUDGMENT</text>
+  <text x="856" y="301" text-anchor="middle" font-size="16" font-weight="800" fill="#1e293b">Fable 5</text>
+  <text x="856" y="324" text-anchor="middle" font-size="11.5" font-weight="700" fill="#d97706">advisor</text>
+  <text x="856" y="348" text-anchor="middle" font-size="10" fill="#64748b">Architecture, planning,</text>
+  <text x="856" y="362" text-anchor="middle" font-size="10" fill="#64748b">commitment-boundary calls</text>
+  <rect x="789" y="398" width="134" height="24" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="856" y="414" text-anchor="middle" font-size="10" font-weight="700" fill="#475569">read-only verdict</text>
+
+  <!-- cost gradient -->
+  <rect x="40" y="466" width="900" height="12" rx="6" fill="url(#cost)"/>
+  <text x="40" y="497" text-anchor="start" font-size="11" fill="#64748b">◀ cheaper · higher volume</text>
+  <text x="940" y="497" text-anchor="end" font-size="11" fill="#64748b">premium · judgment ▶</text>
+
+  <!-- escalation + legend -->
+  <text x="480" y="534" text-anchor="middle" font-size="11.5" fill="#475569">Escalate on evidence: a task that fails 2× at <tspan font-weight="700">implementer</tspan> (Sonnet) → <tspan font-weight="700">hard-implementer</tspan> (Opus) if the code is hard, else <tspan font-weight="700">advisor</tspan> (Fable).</text>
+  <text x="480" y="562" text-anchor="middle" font-size="11" font-style="italic" fill="#94a3b8">Only implementer &amp; hard-implementer write; advisor, reviewer &amp; explorer are read-only — the orchestrator verifies every diff.</text>
+  <text x="480" y="588" text-anchor="middle" font-size="11" fill="#64748b">Lanes are persistent sidekicks: spawn once per work stream, then continue the same instance with delta consults.</text>
+</svg>
