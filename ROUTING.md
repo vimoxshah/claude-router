@@ -1,4 +1,4 @@
-# ROUTING.md — Claude-native model dispatch
+# Claude-native model dispatch (CLAUDE-ROUTING.md)
 
 A standalone routing layer for **Claude models only** — the orchestrator (your main session) dispatches each task to the cheapest Claude model that can do it well, and spends premium intelligence only where errors compound.
 
@@ -11,9 +11,9 @@ A standalone routing layer for **Claude models only** — the orchestrator (your
 | Tier          | Model      | Task class                                                                 | Lane agent   |
 | ------------- | ---------- | -------------------------------------------------------------------------- | ------------ |
 | **Judgment**  | Fable 5    | Deep architecture, planning, hardest reasoning, advisor at a commitment boundary | `advisor`    |
-| **Orchestrate** | Opus 4.8 | Coordination, complex multi-file reasoning, final synthesis, diff review   | main session / `reviewer` |
-| **Build**     | Sonnet 5   | Normal implementation, standard multi-file changes, moderate reasoning     | `implementer`|
+| **Orchestrate / Review** | Opus 4.8 | Coordination, complex multi-file reasoning, final synthesis, diff review   | main session / `reviewer` |
 | **Hard build** | Opus 4.8  | Escalated / uncertain implementation, root-cause debugging, deep-reasoning code changes | `hard-implementer` |
+| **Build**     | Sonnet 5   | Normal implementation, standard multi-file changes, moderate reasoning     | `implementer`|
 | **Volume**    | Haiku 4.5  | Broad search / exploration fan-out, locate code, summarize, classify       | `explorer`   |
 
 The economics: most turns are mechanical — run them cheap (Haiku/Sonnet); the few moments that decide whether the next hour is wasted get the premium model (Fable). You approach top-tier quality while the bulk of tokens generate at workhorse rates.
