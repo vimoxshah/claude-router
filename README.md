@@ -84,7 +84,6 @@ A `implementer` (Sonnet) packet fails its checks twice → the router escalates 
 
 ## Notes
 
-- This is **separate from** the Codex orchestrator ([`claude-codex-orchestrator`](https://github.com/vimoxshah/claude-codex-orchestrator), which delegates *execution* to Codex) — different mechanism, never mixed.
 - Tune the tiers and budgets in [`ROUTING.md`](ROUTING.md) to your own model access.
 
 ## License
