@@ -17,7 +17,7 @@ description: Claude-native multi-model routing — dispatch each task to the rig
 | Volume        | `explorer`            | Haiku 4.5| no (read-only search) |
 | Review/synth  | `reviewer`            | Opus 4.8 | no (read-only) |
 
-For a one-off tier that doesn't need a role prompt, call the Agent tool inline with an explicit `model:` override instead of a named agent.
+Each named lane is a subagent definition installed under `agents/` in your Claude Code config (shipped with this skill); its model is pinned in that file's frontmatter, so a dispatch-by-name runs at the right tier regardless of your current model. If a named dispatch has nothing to spawn, the lane agents aren't installed — install them (see the repo README), don't silently absorb the work. For a one-off tier that doesn't need a role prompt, call the Agent tool inline with an explicit `model:` override instead of a named agent.
 
 **Route effort with the model — an unset subagent inherits both.** A spawn with nothing pinned inherits not just your model but your *current reasoning effort*: launch a Haiku sweep while you happen to be running high and the volume lane burns high-effort tokens on grep work. The Agent tool pins only `model:`; per-spawn effort control exists only in Workflow `agent()` opts (`effort: 'low'` for mechanical/volume lanes, high tiers reserved for judge/verify lanes) — so effort-sensitive fan-outs go through Workflow, and for Agent-tool spawns treat your own effort level at spawn time as part of the dispatch decision. Spend your own high effort where a wrong call compounds — the commitment-boundary/routing call itself, not execution supervision: a wrong low-effort scope call wastes the entire downstream chain, which dwarfs the effort delta.
 
