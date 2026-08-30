@@ -31,8 +31,8 @@ You approach top-tier quality while the bulk of tokens generate at workhorse rat
 | Tier        | Model     | Task class                                                        | Lane agent          | Writes? |
 | ----------- | --------- | ---------------------------------------------------------------- | ------------------- | ------- |
 | Judgment    | Fable 5   | Deep architecture, planning, commitment-boundary advice          | `advisor`           | no |
-| Orchestrate / Review | Opus 4.8 | Coordination, complex reasoning, synthesis, diff review | main session / `reviewer` | no |
-| Hard build  | Opus 4.8  | Escalated / uncertain implementation, root-cause debugging       | `hard-implementer`  | **yes** |
+| Orchestrate / Review | Opus 5 | Coordination, complex reasoning, synthesis, diff review | main session / `reviewer` | no |
+| Hard build  | Opus 5  | Escalated / uncertain implementation, root-cause debugging       | `hard-implementer`  | **yes** |
 | Build       | Sonnet 5  | Normal implementation, standard multi-file changes               | `implementer`       | **yes** |
 | Volume      | Haiku 4.5 | Broad search / exploration fan-out, locate code, summarize       | `explorer`          | no |
 
@@ -43,8 +43,8 @@ The skill routes by dispatching **named subagents** — one per lane. Each lives
 | Agent file | Lane | Model | Writes? |
 | ---------- | ---- | ----- | ------- |
 | [`advisor.md`](agents/advisor.md) | Judgment | Fable 5 | no |
-| [`reviewer.md`](agents/reviewer.md) | Review / synthesis | Opus 4.8 | no |
-| [`hard-implementer.md`](agents/hard-implementer.md) | Hard build | Opus 4.8 | **yes** |
+| [`reviewer.md`](agents/reviewer.md) | Review / synthesis | Opus 5 | no |
+| [`hard-implementer.md`](agents/hard-implementer.md) | Hard build | Opus 5 | **yes** |
 | [`implementer.md`](agents/implementer.md) | Build | Sonnet 5 | **yes** |
 | [`explorer.md`](agents/explorer.md) | Volume search | Haiku 4.5 | no |
 
@@ -55,9 +55,9 @@ Edit an agent's `model:` to match your own model access, or its body to tune the
 The skill and its lane agents install into two directories. Drop the skill into your skills directory, the agents into your agents directory, and the routing file at your config root:
 
 ```bash
-# 1 · the skill
+# 1 · the skill (SKILL.md + the drift checker it runs as a preflight)
 mkdir -p ~/.claude/skills/claude-router
-cp SKILL.md ~/.claude/skills/claude-router/SKILL.md
+cp SKILL.md validate.mjs ~/.claude/skills/claude-router/
 
 # 2 · the lane agents the skill dispatches (required)
 mkdir -p ~/.claude/agents
@@ -67,7 +67,15 @@ cp agents/*.md ~/.claude/agents/
 cp ROUTING.md ~/.claude/CLAUDE-ROUTING.md   # then edit to taste
 ```
 
-Skipping step 2 leaves the skill dispatching `advisor`/`implementer`/… by name into agents that don't exist. Project-scoped installs put both under `<repo>/.claude/` instead. A per-repo `<repo>/CLAUDE-ROUTING.md` overrides the global one wholesale. Full contract in [`SKILL.md`](SKILL.md); the dispatch table lives in [`ROUTING.md`](ROUTING.md).
+Or get it with the rest of my skills in one command:
+
+```bash
+npx skills add vimoxshah/skills --skill claude-router
+```
+
+Skipping step 2 leaves the skill dispatching `advisor`/`implementer`/… by name into agents that don't exist. Project-scoped installs put both under `<repo>/.claude/` instead. A per-repo `<repo>/CLAUDE-ROUTING.md` overrides the global one wholesale.
+
+Check the lanes any time with `node ~/.claude/skills/claude-router/validate.mjs` — it fails on an unpinned model, a read-only lane holding write tools, or a conduct rule missing from a write lane. Full contract in [`SKILL.md`](SKILL.md); the dispatch table lives in [`ROUTING.md`](ROUTING.md).
 
 ## Examples — how routing plays out
 

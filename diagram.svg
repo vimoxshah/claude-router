@@ -53,7 +53,7 @@
   <!-- Hard build / Opus -->
   <rect x="406" y="245" width="168" height="196" rx="12" fill="#ffffff" stroke="#8b5cf6" stroke-width="2"/>
   <text x="490" y="273" text-anchor="middle" font-size="10.5" font-weight="800" fill="#7c3aed" letter-spacing="1">HARD BUILD</text>
-  <text x="490" y="301" text-anchor="middle" font-size="16" font-weight="800" fill="#1e293b">Opus 4.8</text>
+  <text x="490" y="301" text-anchor="middle" font-size="16" font-weight="800" fill="#1e293b">Opus 5</text>
   <text x="490" y="324" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7c3aed">hard-implementer</text>
   <text x="490" y="348" text-anchor="middle" font-size="10" fill="#64748b">Escalated / uncertain impl,</text>
   <text x="490" y="362" text-anchor="middle" font-size="10" fill="#64748b">root-cause debugging</text>
@@ -63,7 +63,7 @@
   <!-- Orchestrate / Review / Opus -->
   <rect x="589" y="245" width="168" height="196" rx="12" fill="#ffffff" stroke="#a78bfa" stroke-width="2"/>
   <text x="673" y="273" text-anchor="middle" font-size="10.5" font-weight="800" fill="#7c3aed" letter-spacing="0.5">ORCHESTRATE / REVIEW</text>
-  <text x="673" y="301" text-anchor="middle" font-size="16" font-weight="800" fill="#1e293b">Opus 4.8</text>
+  <text x="673" y="301" text-anchor="middle" font-size="16" font-weight="800" fill="#1e293b">Opus 5</text>
   <text x="673" y="324" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7c3aed">reviewer</text>
   <text x="673" y="348" text-anchor="middle" font-size="10" fill="#64748b">Coordination, synthesis,</text>
   <text x="673" y="362" text-anchor="middle" font-size="10" fill="#64748b">final diff review</text>
