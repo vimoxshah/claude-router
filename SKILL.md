@@ -21,17 +21,17 @@ and the cost lands downstream where it is hardest to attribute. Already validate
 
 **Context.** The policy (tiers, triggers, cost doctrine, hard rules) lives in the **repo-local `<repo>/CLAUDE-ROUTING.md` if it exists, else the global `~/.claude/CLAUDE-ROUTING.md`** — check the repo root first, fall back to global; a per-repo file overrides the global default wholesale. Read whichever applies if you don't have it in context. The lanes are Claude Code subagents dispatched by the Agent tool:
 
-| Lane          | Agent (subagent_type) | Model    | Writes? |
-| ------------- | --------------------- | -------- | ------- |
-| Judgment      | `advisor`             | Fable 5  | no (read-only verdict) |
-| Build         | `implementer`         | Sonnet 5 | yes |
-| Hard build    | `hard-implementer`    | Opus 5   | yes |
-| Volume        | `explorer`            | Haiku 4.5| no (read-only search) |
-| Review/synth  | `reviewer`            | Opus 5   | no (read-only) |
+| Lane          | Agent (subagent_type) | Model    | Effort  | Writes? |
+| ------------- | --------------------- | -------- | ------- | ------- |
+| Judgment      | `advisor`             | Fable 5  | session | no (read-only verdict) |
+| Build         | `implementer`         | Sonnet 5 | session | yes |
+| Hard build    | `hard-implementer`    | Opus 5.5 | high    | yes |
+| Volume        | `explorer`            | Haiku 4.5| session | no (read-only search) |
+| Review/synth  | `reviewer`            | Opus 5.5 | medium  | no (read-only) |
 
 For a one-off tier that doesn't need a role prompt, call the Agent tool inline with an explicit `model:` override instead of a named agent.
 
-**Route effort with the model — an unset subagent inherits both.** A spawn with nothing pinned inherits not just your model but your *current reasoning effort*: launch a Haiku sweep while you happen to be running high and the volume lane burns high-effort tokens on grep work. The Agent tool pins only `model:`; per-spawn effort control exists only in Workflow `agent()` opts (`effort: 'low'` for mechanical/volume lanes, high tiers reserved for judge/verify lanes) — so effort-sensitive fan-outs go through Workflow, and for Agent-tool spawns treat your own effort level at spawn time as part of the dispatch decision. Spend your own high effort where a wrong call compounds — the commitment-boundary/routing call itself, not execution supervision: a wrong low-effort scope call wastes the entire downstream chain, which dwarfs the effort delta.
+**Route effort with the model — an unset subagent inherits both.** A spawn with nothing pinned inherits not just your model but your *current reasoning effort*: launch a Haiku sweep while you happen to be running high and the volume lane burns high-effort tokens on grep work. A named lane fixes this in its own file: `effort:` in the agent's frontmatter overrides the session, the same way `model:` does, so the Opus lanes pin it (the Effort column above). Opus 5.5 defaults to `medium` and does well there on code work (system card pp.176, 179); `hard-implementer` pins `high` because it only gets the work that is known to be hard. The Agent tool itself takes no effort argument, so an inline `model:` override with no named agent, and any lane marked `session`, still inherits your effort: for those, treat your effort at spawn time as part of the dispatch decision, or go through Workflow `agent()` opts (`effort: 'low'` for mechanical/volume lanes). Spend your own high effort where a wrong call compounds — the commitment-boundary/routing call itself, not execution supervision: a wrong low-effort scope call wastes the entire downstream chain, which dwarfs the effort delta.
 
 **Lanes are persistent sidekicks, not per-call tools.** A fresh Agent spawn per consult is the advisor-tool anti-pattern (Cognition's Devin Fusion finding): every call re-pays the full context transfer, and the advisor remembers nothing between consults. Instead, spawn each role **once per work stream** with its framing context (goal, constraints, decisions so far), then **continue the same instance via SendMessage** for every later consult — sending only the delta (what changed, the new question). The subagent's transcript is its own persistent, cached context: consults get cheaper and sharper as the stream progresses. Re-spawn fresh only when the work stream changes, the lane's model changes (a deliberate context break), or the instance's context is stale/poisoned.
 

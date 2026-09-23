@@ -38,9 +38,9 @@ const POLICY_GLOBAL = join(HOME, '.claude', 'CLAUDE-ROUTING.md');
 const LANES = [
   { name: 'advisor',          model: 'fable',  writes: false, bash: false, role: 'Judgment' },
   { name: 'implementer',      model: 'sonnet', writes: true,  bash: true,  role: 'Build' },
-  { name: 'hard-implementer', model: 'opus',   writes: true,  bash: true,  role: 'Hard build' },
+  { name: 'hard-implementer', model: 'opus',   effort: 'high',   writes: true,  bash: true,  role: 'Hard build' },
   { name: 'explorer',         model: 'haiku',  writes: false, bash: true,  role: 'Volume' },
-  { name: 'reviewer',         model: 'opus',   writes: false, bash: true,  role: 'Review/synth' },
+  { name: 'reviewer',         model: 'opus',   effort: 'medium', writes: false, bash: true,  role: 'Review/synth' },
 ];
 
 /** Conduct rules that BOTH write lanes must carry, since the packet no longer restates them. */
@@ -111,6 +111,15 @@ for (const lane of LANES) {
     pass(`${lane.name} → ${lane.model} (${lane.role})`);
   }
   if (!fm.description) fail(`lane "${lane.name}" has no description (it will never auto-select)`);
+  // Opus lanes pin effort too: an unpinned Opus lane runs at whatever effort the
+  // orchestrator happens to be on (the Agent tool takes no effort argument).
+  if (lane.effort) {
+    if (fm.effort !== lane.effort) {
+      fail(`lane "${lane.name}" must pin effort: ${lane.effort}`, `found: ${fm.effort ?? '(unpinned — inherits the session)'}`);
+    } else {
+      pass(`${lane.name} effort → ${lane.effort}`);
+    }
+  }
 
   // ── 2. Read-only lanes must not hold write tools ──────────────────────────────
   const tools = parseTools(fm.tools);

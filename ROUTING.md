@@ -17,9 +17,9 @@ node ~/.claude/skills/claude-router/validate.mjs
 | Tier          | Model      | Task class                                                                 | Lane agent   |
 | ------------- | ---------- | -------------------------------------------------------------------------- | ------------ |
 | **Judgment**  | Fable 5    | Deep architecture, planning, hardest reasoning, advisor at a commitment boundary | `advisor`    |
-| **Orchestrate** | Opus 5   | Coordination, complex multi-file reasoning, final synthesis, diff review   | main session / `reviewer` |
+| **Orchestrate** | Opus 5.5 | Coordination, complex multi-file reasoning, final synthesis, diff review   | main session / `reviewer` |
 | **Build**     | Sonnet 5   | Normal implementation, standard multi-file changes, moderate reasoning     | `implementer`|
-| **Hard build** | Opus 5    | Escalated / uncertain implementation, root-cause debugging, deep-reasoning code changes | `hard-implementer` |
+| **Hard build** | Opus 5.5  | Escalated / uncertain implementation, root-cause debugging, deep-reasoning code changes | `hard-implementer` |
 | **Volume**    | Haiku 4.5  | Broad search / exploration fan-out, locate code, summarize, classify       | `explorer`   |
 
 The economics (from Anthropic's advisor-tool pattern): most turns are mechanical — run them cheap (Haiku/Sonnet); the few moments that decide whether the next hour is wasted get the premium model (Fable). You approach top-tier quality while the bulk of tokens generate at workhorse rates.
@@ -57,7 +57,7 @@ A named agent hardcodes its model (`advisor` = Fable). If that model can't be di
 
 | Lane down            | Fallback model      | Rule                                                                                     |
 | -------------------- | ------------------- | ---------------------------------------------------------------------------------------- |
-| **Fable 5 removed**  | **Opus 5**        | `advisor` runs as Opus. **Degrade — never drop the consult.** A commitment-boundary decision still gets a judgment pass; you just tell the user "advisor running on Opus (Fable unavailable) — judgment tier reduced." |
+| **Fable 5 removed**  | **Opus 5.5**        | `advisor` runs as Opus. **Degrade — never drop the consult.** A commitment-boundary decision still gets a judgment pass; you just tell the user "advisor running on Opus (Fable unavailable) — judgment tier reduced." |
 | Opus unavailable     | Sonnet 5            | Orchestrate/review on Sonnet; flag reduced review depth on risky diffs. `hard-implementer` falls to `implementer` (Sonnet) with a tighter, decomposed packet — flag the reduced reasoning tier. |
 | Sonnet unavailable   | Opus (up) or Haiku (down) | Build → prefer Opus if available; else Haiku with a tighter, more-decomposed packet.  |
 | Haiku unavailable    | Sonnet 5            | Volume/search on Sonnet — costlier, so tighten scope.                                    |
