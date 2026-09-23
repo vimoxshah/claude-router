@@ -31,8 +31,8 @@ You approach top-tier quality while the bulk of tokens generate at workhorse rat
 | Tier        | Model     | Task class                                                        | Lane agent          | Writes? |
 | ----------- | --------- | ---------------------------------------------------------------- | ------------------- | ------- |
 | Judgment    | Fable 5   | Deep architecture, planning, commitment-boundary advice          | `advisor`           | no |
-| Orchestrate / Review | Opus 5 | Coordination, complex reasoning, synthesis, diff review | main session / `reviewer` | no |
-| Hard build  | Opus 5  | Escalated / uncertain implementation, root-cause debugging       | `hard-implementer`  | **yes** |
+| Orchestrate / Review | Opus 5.5 | Coordination, complex reasoning, synthesis, diff review | main session / `reviewer` | no |
+| Hard build  | Opus 5.5  | Escalated / uncertain implementation, root-cause debugging       | `hard-implementer`  | **yes** |
 | Build       | Sonnet 5  | Normal implementation, standard multi-file changes               | `implementer`       | **yes** |
 | Volume      | Haiku 4.5 | Broad search / exploration fan-out, locate code, summarize       | `explorer`          | no |
 
@@ -43,8 +43,8 @@ The skill routes by dispatching **named subagents** — one per lane. Each lives
 | Agent file | Lane | Model | Writes? |
 | ---------- | ---- | ----- | ------- |
 | [`advisor.md`](agents/advisor.md) | Judgment | Fable 5 | no |
-| [`reviewer.md`](agents/reviewer.md) | Review / synthesis | Opus 5 | no |
-| [`hard-implementer.md`](agents/hard-implementer.md) | Hard build | Opus 5 | **yes** |
+| [`reviewer.md`](agents/reviewer.md) | Review / synthesis | Opus 5.5 | no |
+| [`hard-implementer.md`](agents/hard-implementer.md) | Hard build | Opus 5.5 | **yes** |
 | [`implementer.md`](agents/implementer.md) | Build | Sonnet 5 | **yes** |
 | [`explorer.md`](agents/explorer.md) | Volume search | Haiku 4.5 | no |
 
